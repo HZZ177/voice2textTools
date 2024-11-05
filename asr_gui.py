@@ -24,7 +24,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-
 class WorkerSignals(QObject):
     finished = Signal(str, str)
     errno = Signal(str, str)
@@ -43,11 +42,11 @@ class ASRWorker(QRunnable):
         try:
             use_cache = True
             # 根据选择的 ASR 引擎实例化相应的类
-            if self.asr_engine == 'B 接口':
+            if self.asr_engine == '必剪接口':
                 asr = BcutASR(self.file_path, use_cache=use_cache)
-            elif self.asr_engine == 'J 接口':
+            elif self.asr_engine == '剪映接口':
                 asr = JianYingASR(self.file_path, use_cache=use_cache)
-            elif self.asr_engine == 'K 接口':
+            elif self.asr_engine == '快手接口':
                 asr = KuaiShouASR(self.file_path, use_cache=use_cache)
             elif self.asr_engine == 'Whisper':
                 # from bk_asr.WhisperASR import WhisperASR
@@ -110,7 +109,7 @@ class ASRWidget(QWidget):
 
         # ASR引擎选择下拉框
         self.combo_box = ComboBox(self)
-        self.combo_box.addItems(['B 接口', 'J 接口', 'K 接口', 'Whisper'])
+        self.combo_box.addItems(['必剪接口', '剪映接口', '快手接口', 'Whisper'])
         layout.addWidget(self.combo_box)
 
         # 文件选择区域
@@ -426,17 +425,17 @@ class MainWindow(FluentWindow):
     """主窗口"""
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('ASR Processing Tool')
+        self.setWindowTitle('ASR音频转文字工具')
 
         # ASR 处理界面
         self.asr_widget = ASRWidget()
         self.asr_widget.setObjectName("main")
-        self.addSubInterface(self.asr_widget, FIF.ALBUM, 'ASR Processing')
+        self.addSubInterface(self.asr_widget, FIF.ALBUM, '提取字幕处理')
 
         # 个人信息界面
         self.info_widget = InfoWidget()
         self.info_widget.setObjectName("info")  # 设置对象名称
-        self.addSubInterface(self.info_widget, FIF.GITHUB, 'About')
+        self.addSubInterface(self.info_widget, FIF.GITHUB, 'Tips')
 
         self.navigationInterface.setExpandWidth(200)
         self.resize(800, 600)
